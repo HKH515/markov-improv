@@ -4,7 +4,7 @@ import os
 
 folder = sys.argv[1]
 
-file_root = "corpus"
+file_root = "corpora"
 
 
 models = []
@@ -15,15 +15,11 @@ for f in os.listdir(os.path.join(file_root, folder)):
         data = f_stream.read()
         models.append(markovify.Text(data))
 
-# Get raw text as string.
-with open("corpus/gabriel_iglesias.txt") as f:
-    text = f.read()
-
 
 combo_model = markovify.combine(models, [1] * len(models))
 
 # Print five randomly-generated sentences
-for i in range(1):
+for i in range(10):
     print(combo_model.make_sentence())
 
 # Print three randomly-generated sentences of no more than 140 characters
