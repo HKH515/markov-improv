@@ -25,12 +25,12 @@
 </head>
 
 <body>
-  <div class="input-box-area">
-    {% block input_box_area %}{% endblock %}
+  <div class="navbar_container">
+    {% include "navbar.html" %}
   </div>
   <div class="container">
     {% block content %}{% endblock %}
-    <p>Notice: these jokes are randomly generated and are not quotes</p>
+    <p class="disclaimer">Notice: these jokes are randomly generated and are not quotes</p>
   </div>
 </body>
 
@@ -43,18 +43,7 @@
     $(".dropdown-item[data-value={{comedian_id}}]").addClass("active");
     $("#dropdownMenuButton").html("{{comedian}}");
     selected = "{{comedian_id}}";
-    //$(".dropdown-item").removeClass("caret");
-    //$(".dropdown-item[data-value={{comedian_id}}]").html($(this).text() + ' <span class="caret"></span>');
-    //$("#dropdownMenuButton:first-child").html($(this).text() + ' <span class="caret"></span>');
   });
-
-  /*$(".dropdown-menu a").click(function () {
-    //$("#dropdownMenuButton:first-child").html($(this).text() + ' <span class="caret"></span>');
-    console.log($(this).text);
-    selected = $(this).attr("data-value");
-    //console.log(selected);
-    //console.log($("#dropdownMenuButton:first-child"));
-  });*/
 
   $(".dropdown-item").click(function(){
     $(".dropdown-item").removeClass("active");
