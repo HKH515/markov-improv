@@ -1,7 +1,17 @@
-<form action="/generate" method="get">
-    <select name="comedian">
-        <option value="chris_rock">Chris Rock</option>
-        <option value="dave_chappelle">Dave Chappelle</option>
-    </select>
-    <input type="submit" value="Generate"></input>
-</form>
+<div class="btn-group" role="group" aria-label="Basic example">
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Select a comedian
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Chris Rock</a>
+                <a class="dropdown-item" href="#">Dave Chappelle</a>
+            </div>
+        </div>
+        <div class="btn-group mr-2" role="group" aria-label="Second group">
+            <button class="btn btn-primary" onClick="goToJoke" style="display:inline-block">Generate</button>
+        </div>
+    </div>
+</div>
