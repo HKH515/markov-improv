@@ -33,17 +33,39 @@
     <p>Notice: these jokes are randomly generated and are not quotes</p>
   </div>
 </body>
+
 <script>
+
   var selected = null;
-  $(".dropdown-menu a").click(function () {
-    $("#dropdownMenuButton:first-child").html($(this).text() + ' <span class="caret"></span>');
-    selected = $(this).text();
-    console.log(selected);
+
+  $(document).ready(function(){
+    $(".dropdown-item").removeClass("active");
+    $(".dropdown-item[data-value={{comedian_id}}]").addClass("active");
+    $("#dropdownMenuButton").html("{{comedian}}");
+    selected = "{{comedian_id}}";
+    //$(".dropdown-item").removeClass("caret");
+    //$(".dropdown-item[data-value={{comedian_id}}]").html($(this).text() + ' <span class="caret"></span>');
+    //$("#dropdownMenuButton:first-child").html($(this).text() + ' <span class="caret"></span>');
+  });
+
+  /*$(".dropdown-menu a").click(function () {
+    //$("#dropdownMenuButton:first-child").html($(this).text() + ' <span class="caret"></span>');
+    console.log($(this).text);
+    selected = $(this).attr("data-value");
+    //console.log(selected);
+    //console.log($("#dropdownMenuButton:first-child"));
+  });*/
+
+  $(".dropdown-item").click(function(){
+    $(".dropdown-item").removeClass("active");
+    $(this).addClass("active");
+    $("#dropdownMenuButton").html($(this).text());
+    selected = $(this).attr("data-value");
   });
 
   function goToJoke() {
-
+    console.log(selected);
+    window.location = "generate?comedian=" + selected;
   }
 </script>
-
 </html>
