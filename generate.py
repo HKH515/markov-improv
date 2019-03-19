@@ -7,6 +7,22 @@ import re
 
 file_root = "corpora"
 
+class GeneratorLoader:
+    def __init__(self):
+        self.comedians = ["chris_rock", "dave_chappelle", "amy_schumer", "gabriel_iglesias"]
+        self.models = ["nltk", "markov"]
+        self.generators = {}
+        for comedian in self.comedians:
+            for model in self.models:
+                print("Loading comedian %s with model %s" % (comedian, model))
+                self.generators[(comedian, model)] = Generator(comedian, model)
+    def __getitem__(self, key):
+        return self.generators[key]
+
+
+
+
+
 class Generator:
     def __init__(self, folder, model="nltk"):
         self.models = []
