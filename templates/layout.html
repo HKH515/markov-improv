@@ -36,25 +36,40 @@
 
 <script>
 
-  var selected = null;
+  var selected_comedian = null;
+  var selected_model = null;
 
   $(document).ready(function(){
     $(".dropdown-item").removeClass("active");
-    $(".dropdown-item[data-value={{comedian_id}}]").addClass("active");
-    $("#dropdownMenuButton").html("{{comedian}}");
-    selected = "{{comedian_id}}";
+    $("#comedian_dropdown .dropdown-item[data-value={{comedian_id}}]").addClass("active");
+    $("#dropdownMenuButton_comedian").html("{{comedian}}");
+    selected_comedian = "{{comedian_id}}";
+
+    $("#model_dropdown .dropdown-item[data-value={{model_id}}]").addClass("active");
+    $("#dropdownMenuButton_model").html("{{model}}");
+    selected_model = "{{comedian_id}}";
   });
 
-  $(".dropdown-item").click(function(){
-    $(".dropdown-item").removeClass("active");
+  $("#comedian_dropdown .dropdown-item").click(function(){
+    $("#comedian_dropdown .dropdown-item").removeClass("active");
     $(this).addClass("active");
-    $("#dropdownMenuButton").html($(this).text());
-    selected = $(this).attr("data-value");
+    $("#dropdownMenuButton_comedian").html($(this).text());
+    selected_comedian = $(this).attr("data-value");
   });
+  $("#model_dropdown .dropdown-item").click(function(){
+    $("#dropdown_model .dropdown-item").removeClass("active");
+    $(this).addClass("active");
+    $("#dropdownMenuButton_model").html($(this).text());
+    selected_model = $(this).attr("data-value");
+  });
+
 
   function goToJoke() {
-    console.log(selected);
-    window.location = "generate?comedian=" + selected;
+    console.log(selected_comedian);
+    console.log(selected_model);
+    if (selected_comedian && selected_model) {
+      window.location = "generate?comedian=" + selected_comedian + "&model=" + selected_model;
+    }
   }
 </script>
 </html>

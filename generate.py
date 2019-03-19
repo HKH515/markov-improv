@@ -8,15 +8,16 @@ import re
 file_root = "corpora"
 
 class Generator:
-    def __init__(self, folder):
+    def __init__(self, folder, model="nltk"):
         self.models = []
         for f in os.listdir(os.path.join(file_root, folder)):
             file_path = os.path.join(file_root, folder, f)
             with open(file_path) as f_stream:
                 data = f_stream.read()
-               
-                self.models.append(CustomText(data))
-               
+                if model == "nltk":
+                    self.models.append(CustomText(data))
+                elif model == "markov":
+                    self.models.append(markovify.Text(data))
             self.combo_model = markovify.combine(self.models, [1] * len(self.models))
 
     def get_jokes(self, num_jokes):

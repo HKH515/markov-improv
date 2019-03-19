@@ -1,0 +1,29 @@
+<div class="btn-group" role="group" aria-label="Basic example">
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton_comedian" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Select a comedian
+            </button>
+            <div class="dropdown-menu" id="comedian_dropdown" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#" data-value="chris_rock">Chris Rock</a>
+                <a class="dropdown-item" href="#" data-value="dave_chappelle">Dave Chappelle</a>
+                <a class="dropdown-item" href="#" data-value="amy_schumer">Amy Schumer</a>
+                <a class="dropdown-item" href="#" data-value="gabriel_iglesias">Gabriel Iglesias</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton_model" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Select a model
+            </button>
+            <div class="dropdown-menu" id="model_dropdown" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#" data-value="markov">Markov chain</a>
+                <a class="dropdown-item" href="#" data-value="nltk">NLTK</a>
+            </div>
+        </div>
+    </div>
+    <div class="btn-group mr-2" role="group" aria-label="Second group">
+        <button class="btn btn-primary btn-block" type="button" onClick="goToJoke()" id="oneliner_button">Generate</button>
+    </div>
+</div>

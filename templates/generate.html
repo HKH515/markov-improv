@@ -1,11 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h3>Markov Improv!</h3>
-    {% include "form.html" %}
+    <h3>One-liners in the style of {{comedian}}</h3>
+    {% include "oneliner_form.html" %}
     <ul>
         {% for joke in jokes %}
             <li>{{joke}}</li>
         {% endfor %}
     </ul>
-    - {{comedian}}
 {% endblock %}
