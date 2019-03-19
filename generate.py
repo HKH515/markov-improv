@@ -16,7 +16,7 @@ class Generator:
                 data = f_stream.read()
                 if model == "nltk":
                     self.models.append(CustomText(data))
-                elif model == "markov":
+                else:
                     self.models.append(markovify.Text(data))
             self.combo_model = markovify.combine(self.models, [1] * len(self.models))
 

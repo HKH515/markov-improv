@@ -2,9 +2,9 @@
 {% block content %}
     <h3>One-liners in the style of {{comedian}}</h3>
     {% include "oneliner_form.html" %}
-    <ul>
+    <ul class="list-group">
         {% for joke in jokes %}
-            <li>{{joke}}</li>
+            <li class="list-group-item">{{joke}}</li>
         {% endfor %}
     </ul>
 {% endblock %}
