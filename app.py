@@ -5,7 +5,6 @@ app = Flask(__name__)
 
 
 model_id_to_name = {"nltk": "NLTK", "markov": "Markov chain"}
-generator_loader = GeneratorLoader()
 
 @app.route('/')
 def index():
@@ -15,7 +14,7 @@ def index():
 def joke_page(methods = ["GET"]):
     comedian = request.args["comedian"]
     model = request.args["model"]
-    gen = generator_loader[(comedian, model)]
+    gen = Generator(comedian, model)
     return render_template("generate.html", jokes = gen.get_jokes(5), model_id=model, model=model_id_to_name[model], comedian_id=comedian, comedian=" ".join([s.capitalize() for s in comedian.split("_")]))
 
 @app.route('/generate_landing')
