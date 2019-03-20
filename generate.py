@@ -8,7 +8,7 @@ import re
 file_root = "corpora"
 
 
-nltk.download("averaged_perceptron_tagger")
+#nltk.download("averaged_perceptron_tagger")
 
 class GeneratorLoader:
     def __init__(self):
