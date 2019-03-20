@@ -5,6 +5,8 @@ import nltk
 
 import re
 
+nltk.download('averaged_perceptron_tagger')
+
 file_root = "corpora"
 
 class GeneratorLoader:
