@@ -7,6 +7,9 @@ import re
 
 file_root = "corpora"
 
+
+nltk.download("averaged_perceptron_tagger")
+
 class GeneratorLoader:
     def __init__(self):
         self.comedians = ["chris_rock", "dave_chappelle", "amy_schumer", "gabriel_iglesias"]
