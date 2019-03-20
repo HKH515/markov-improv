@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 from generate import Generator, GeneratorLoader
 
-
 app = Flask(__name__)
 
 
