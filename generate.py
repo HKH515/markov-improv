@@ -12,7 +12,7 @@ file_root = "corpora"
 
 class GeneratorLoader:
     def __init__(self):
-        self.comedians = ["chris_rock", "dave_chappelle", "amy_schumer", "gabriel_iglesias", "ricky_gervais"]
+        self.comedians = ["chris_rock", "dave_chappelle", "amy_schumer", "gabriel_iglesias", "ricky_gervais", "jimmy_carr"]
         self.models = ["nltk", "markov"]
         self.models = ["markov"]
         self.generators = {}
