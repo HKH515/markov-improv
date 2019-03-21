@@ -59,7 +59,7 @@
     selected_comedian = $(this).attr("data-value");
   });
   $("#model_dropdown .dropdown-item").click(function(){
-    $("#dropdown_model .dropdown-item").removeClass("active");
+    $("#model_dropdown .dropdown-item").removeClass("active");
     $(this).addClass("active");
     console.log($(this).text());
     $("#dropdownMenuButton_model").html($(this).text());
