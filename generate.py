@@ -3,7 +3,6 @@ import sys
 import os
 import nltk
 
-import spacy
 import re
 
 file_root = "corpora"
