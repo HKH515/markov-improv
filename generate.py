@@ -3,33 +3,25 @@ import sys
 import os
 import nltk
 
+import spacy
 import re
 
 file_root = "corpora"
 
 
-#nltk.download("averaged_perceptron_tagger")
+def get_last_n_words(string, n):
+    word_list = string.split(" ")
+    return " ".join(word_list[len(word_list)-n:])
 
-class GeneratorLoader:
-    def __init__(self):
-        self.comedians = ["chris_rock", "dave_chappelle", "amy_schumer", "gabriel_iglesias", "ricky_gervais", "jimmy_carr"]
-        self.models = ["nltk", "markov"]
-        self.models = ["markov"]
-        self.generators = {}
-        for comedian in self.comedians:
-            for model in self.models:
-                print("Loading comedian %s with model %s" % (comedian, model))
-                self.generators[(comedian, model)] = Generator(comedian, model)
-    def __getitem__(self, key):
-        return self.generators[key]
-
-
-
+def get_all_but_last_n_words(string, n):
+    word_list = string.split(" ")
+    return " ".join(word_list[:len(word_list)-n])
 
 
 class Generator:
-    def __init__(self, folder, model="nltk"):
+    def __init__(self, folder, model="nltk", state_size=3):
         self.models = []
+        self.state_size = state_size
         for f in os.listdir(os.path.join(file_root, folder)):
             file_path = os.path.join(file_root, folder, f)
             with open(file_path) as f_stream:
@@ -37,16 +29,27 @@ class Generator:
                 if model == "nltk":
                     self.models.append(CustomText(data))
                 else:
-                    self.models.append(markovify.Text(data))
-            self.combo_model = markovify.combine(self.models, [1] * len(self.models))
+                    self.models.append(markovify.Text(data, state_size=state_size))
+            weight_vector = [1] * len(self.models)
+            self.combo_model = markovify.combine(self.models, weight_vector)
 
     def get_jokes(self, num_jokes):
         jokes = []
         for i in range(num_jokes):
-            jokes.append(self.combo_model.make_sentence())
+            jokes.append(self.combo_model.make_sentence(tries=100))
         if None in jokes:
             jokes.remove(None)
         return jokes
+
+    def finish_sentence(self, sentence):
+        try:
+            generated_sentence = self.combo_model.make_sentence_with_start(get_last_n_words(sentence, self.state_size))
+            if generated_sentence == None:
+                return None
+            return str(get_all_but_last_n_words(sentence, self.state_size) + " " + generated_sentence).strip()
+        except KeyError as e:
+            return None
+
 # Print five randomly-generated sentences
 
 # Print three randomly-generated sentences of no more than 140 characters

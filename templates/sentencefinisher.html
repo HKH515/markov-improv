@@ -1,0 +1,6 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h3>Finish sentences in the style of {{comedian}}</h3>
+    {% include "sentencefinisher_form.html" %}
+    <p>{{finished_sentence}}</p>
+{% endblock %}

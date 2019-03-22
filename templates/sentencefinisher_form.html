@@ -1,20 +1,15 @@
-<div class="btn-group" role="group" aria-label="Basic example">
-    <div class="btn-group mr-2" role="group" aria-label="First group">
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Enter your text here"></textarea>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                Select a comedian
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#" data-value="chris_rock">Chris Rock</a>
-                <a class="dropdown-item" href="#" data-value="dave_chappelle">Dave Chappelle</a>
-                <a class="dropdown-item" href="#" data-value="amy_schumer">Amy Schumer</a>
-                <a class="dropdown-item" href="#" data-value="gabriel_iglesias">Gabriel Iglesias</a>
-                <a class="dropdown-item" href="#" data-value="ricky_gervais">Ricky Gervais</a>
-                <a class="dropdown-item" href="#" data-value="jimmy_carr">Jimmy Carr</a>
-            </div>
-        </div>
-        <button class="btn btn-primary btn-block" type="button" onClick="goToJoke()" id="oneliner_button">Generate</button>
-    </div>
-</div>
+
+<form action="/sentencefinisher" method="get">
+  <div class="form-group">
+    <select name="comedian">
+        {% for comedian_id, comedian_name in comedians.items() %}
+            <option value="{{comedian_id}}">{{comedian_name}}</option>
+        {% endfor %}
+    </select>
+    <select name="model">
+        <option value="markov">Markov chain</option>
+    </select>
+    <input type="text" class="form-control" name="sentence" id="sentence" placeholder="Enter sentence here" />
+  </div>
+  <button type="submit" class="btn btn-primary" id="sentencefinisher_button">Submit</button>
+</form>

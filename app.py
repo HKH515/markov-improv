@@ -1,12 +1,37 @@
 from flask import Flask, render_template, request
-from generate import Generator, GeneratorLoader
+from generate import Generator
+import os
 
 app = Flask(__name__)
 
 
 model_id_to_name = {"nltk": "NLTK", "markov": "Markov chain"}
 
+file_root = "corpora"
+state_size_upperbound = 3
+
+
+comedian_id_to_name = lambda comedian: " ".join([s.capitalize() for s in comedian.split("_")])
+
+def initialize_comedians():
+    dic = {}
+    for f in os.listdir(file_root):
+        farr = f.split("_")
+        farr = [i.capitalize() for i in farr]
+        f_cap = " ".join(farr)
+        dic[f] = f_cap
+    return dic
+comedians = initialize_comedians()
+
 generator_cache = {}
+
+def get_gen(comedian, model, state_size):
+    if (comedian, model) not in generator_cache:
+        gen = Generator(comedian, model, state_size)
+        generator_cache[(comedian, model, state_size)] = gen
+    gen = generator_cache[(comedian, model, state_size)]
+    return gen
+
 
 @app.route('/')
 def index():
@@ -16,20 +41,38 @@ def index():
 def joke_page(methods = ["GET"]):
     comedian = request.args["comedian"]
     model = request.args["model"]
-    if (comedian, model) not in generator_cache:
-        gen = Generator(comedian, model)
-        generator_cache[(comedian, model)] = gen
-    gen = generator_cache[(comedian, model)]
+    gen = get_gen(comedian, model, state_size_upperbound)
 
-    return render_template("generate.html", jokes = gen.get_jokes(5), model_id=model, model=model_id_to_name[model], comedian_id=comedian, comedian=" ".join([s.capitalize() for s in comedian.split("_")]))
+    return render_template("generate.html", jokes = gen.get_jokes(5), model_id=model, model=model_id_to_name[model], comedians=comedians, comedian_id=comedian, comedian=comedian_id_to_name(comedian))
 
 @app.route('/generate_landing')
 def joke_landing_page():
-    return render_template("generate_landing.html")
+    return render_template("generate_landing.html", comedians=comedians)
 
 @app.route("/sentencefinisher_landing")
 def sentencefinisher_landing():
-    return render_template("sentencefinisher_landing.html")
+    return render_template("sentencefinisher_landing.html", comedians=comedians)
+
+@app.route("/sentencefinisher")
+def sentencefinisher(methods = ["GET"]):
+    comedian = request.args["comedian"]
+    model = request.args["model"]
+    sentence = request.args["sentence"]
+    i = state_size_upperbound
+    finished_sentence = None
+    while True:
+        if i == 0:
+            big_gen = get_gen(comedian, model, state_size_upperbound)
+            finished_sentence = big_gen.get_jokes(1)[0]
+            break
+        gen = get_gen(comedian, model, i)
+        finished_sentence = gen.finish_sentence(sentence)
+        if finished_sentence:
+            break
+
+        i -= 1
+
+    return render_template("sentencefinisher.html", comedians=comedians, model_id=model, model=model_id_to_name[model], comedian=comedian_id_to_name(comedian), comedian_id=comedian, finished_sentence=finished_sentence)
 
 #@app.route("/sentencefinisher")
 #def sentencefinisher_landing(methods = ["GET"]):

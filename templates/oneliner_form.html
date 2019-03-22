@@ -6,12 +6,9 @@
                 Select a comedian
             </button>
             <div class="dropdown-menu" id="comedian_dropdown" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#" data-value="chris_rock">Chris Rock</a>
-                <a class="dropdown-item" href="#" data-value="dave_chappelle">Dave Chappelle</a>
-                <a class="dropdown-item" href="#" data-value="amy_schumer">Amy Schumer</a>
-                <a class="dropdown-item" href="#" data-value="gabriel_iglesias">Gabriel Iglesias</a>
-                <a class="dropdown-item" href="#" data-value="ricky_gervais">Ricky Gervais</a>
-                <a class="dropdown-item" href="#" data-value="jimmy_carr">Jimmy Carr</a>
+            {% for comedian_id, comedian_name in comedians.items() %}
+                <a class="dropdown-item" href="#" data-value="{{comedian_id}}">{{comedian_name}}</a>
+            {% endfor %}
             </div>
         </div>
         <div class="dropdown">
