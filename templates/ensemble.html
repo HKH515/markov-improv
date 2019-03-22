@@ -2,5 +2,8 @@
 {% block content %}
     <h3>Create ensemble sentences</h3>
     {% include "ensemble_form.html" %}
-    <p>{{combined_sentence}}</p>
+
+    {% for comedian, sentence in ensamble_sentences %}
+        <span href="#" class="ensamble-text text-{{comedian}}" data-toggle="tooltip" data-placement="top" title="{{comedians[comedian]}}" data-original-title="{{comedians[comedian]}}">{{sentence}}</span>
+    {% endfor %}
 {% endblock %}

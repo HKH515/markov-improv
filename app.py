@@ -54,17 +54,16 @@ def get_ensamble_sentences(model, num_sentences):
     curr_comedian = random.choice(comedian_list)
     curr_sentence = get_gen(curr_comedian, model, state_size_upperbound).get_jokes(1)[0]
     sentences = [curr_sentence]
+    comedian_sequence = [curr_comedian]
     for i in range(num_sentences):
         next_comedian = comedian_list[(comedian_list.index(curr_comedian)+1) % len(comedian_list)]
         next_sentence = continue_sentence(curr_sentence, next_comedian, model)
         curr_comedian = next_comedian
         curr_sentence += next_sentence
         sentences.append(next_sentence)
+        comedian_sequence.append(next_comedian)
         
-    return sentences
-
-    
-
+    return zip(comedian_sequence, sentences)
 
 @app.route('/')
 def index():
@@ -105,8 +104,7 @@ def ensemble(methods = ["GET"]):
     model = "markov"
     num_sentences = int(request.args["num_sentences"])
     ensamble_sentences = get_ensamble_sentences(model, num_sentences)
-    combined_sentence = " ".join(ensamble_sentences)
-    return render_template("ensemble.html", combined_sentence=combined_sentence)
+    return render_template("ensemble.html", ensamble_sentences=ensamble_sentences, comedians=comedians)
 
 
 
