@@ -4,14 +4,17 @@
 <head>
   <title>Markov Improv</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-    crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <style type="text/css">
     .container {
       max-width: 500px;
@@ -30,35 +33,58 @@
   </div>
   <div class="container">
     {% block content %}{% endblock %}
-    <p class="disclaimer">Notice: these jokes are randomly generated and are not necessarily quotes, furthermore, we take no responsibility for the text generated.</p>
+    <p class="disclaimer">Notice: these jokes are randomly generated and are not necessarily quotes, furthermore, we
+      take no responsibility for the text generated.</p>
   </div>
 </body>
 
 <script>
-
   var selected_comedian = null;
   var selected_model = null;
 
-  $(document).ready(function(){
-    $(".dropdown-item").removeClass("active");
-    $("#comedian_dropdown .dropdown-item[data-value={{comedian_id}}]").addClass("active");
-    $("#dropdownMenuButton_comedian").html("{{comedian}}");
-    selected_comedian = "{{comedian_id}}";
+  $(document).ready(function () {
+    try {
+      $(".dropdown-item").removeClass("active");
+      $("#comedian_dropdown .dropdown-item[data-value={{comedian_id}}]").addClass("active");
+      $("#dropdownMenuButton_comedian").html("{{comedian}}");
+      selected_comedian = "{{comedian_id}}";
+    } catch (err) {}
 
-    console.log($("#model_dropdown .dropdown-item[data-value={{model_id}}]").text());
-    $("#model_dropdown .dropdown-item[data-value={{model_id}}]").addClass("active");
-    $("#dropdownMenuButton_model").html("{{model}}");
-    selected_model = "{{model_id}}";
+    try {
+      console.log($("#model_dropdown .dropdown-item[data-value={{model_id}}]").text());
+      $("#model_dropdown .dropdown-item[data-value={{model_id}}]").addClass("active");
+      $("#dropdownMenuButton_model").html("{{model}}");
+      selected_model = "{{model_id}}";
+    } catch (err) {
+
+    }
+
+    // taken from https://stackoverflow.com/questions/49530497/how-do-i-make-bootstrap-navbar-change-active-state
+    var task = window.location.pathname.split("_")[0],
+      pages = ['/generate', '/sentencefinisher', '/ensemble'];
+    console.log(task);
+
+      $('.navbar-nav li a').each(function(i) {
+        $(this).removeClass('active');
+        console.log($(this).attr("data-value"));
+        if ($(this).attr("data-value") === task) {
+          $(this).addClass('active');
+        }
+      });
+
+
+
+
   });
 
-  $("#comedian_dropdown .dropdown-item").click(function(){
+  $("#comedian_dropdown .dropdown-item").click(function () {
     $("#comedian_dropdown .dropdown-item").removeClass("active");
     $(this).addClass("active");
     console.log($(this).text());
     $("#dropdownMenuButton_comedian").html($(this).text());
     selected_comedian = $(this).attr("data-value");
   });
-  $("#model_dropdown .dropdown-item").click(function(){
+  $("#model_dropdown .dropdown-item").click(function () {
     $("#model_dropdown .dropdown-item").removeClass("active");
     $(this).addClass("active");
     console.log($(this).text());
@@ -67,10 +93,13 @@
   });
 
 
+
+
   function goToJoke() {
     if (selected_comedian && selected_model) {
       window.location = "generate?comedian=" + selected_comedian + "&model=" + selected_model;
     }
   }
 </script>
+
 </html>
