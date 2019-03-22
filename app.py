@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from generate import Generator
+import random
 import os
 
 app = Flask(__name__)
@@ -32,6 +33,38 @@ def get_gen(comedian, model, state_size):
     gen = generator_cache[(comedian, model, state_size)]
     return gen
 
+def continue_sentence(sentence, comedian, model):
+    finished_sentence = None
+    i = state_size_upperbound
+    while True:
+        if i == 0:
+            big_gen = get_gen(comedian, model, state_size_upperbound)
+            finished_sentence = big_gen.get_jokes(1)[0]
+            break
+        gen = get_gen(comedian, model, i)
+        finished_sentence = gen.finish_sentence(sentence)
+        if finished_sentence:
+            break
+        i -= 1
+    return finished_sentence
+
+def get_ensamble_sentences(model, num_sentences):
+    comedian_list = list(comedians.keys())
+    random.shuffle(comedian_list)
+    curr_comedian = random.choice(comedian_list)
+    curr_sentence = get_gen(curr_comedian, model, state_size_upperbound).get_jokes(1)[0]
+    sentences = [curr_sentence]
+    for i in range(num_sentences):
+        next_comedian = comedian_list[(comedian_list.index(curr_comedian)+1) % len(comedian_list)]
+        next_sentence = continue_sentence(curr_sentence, next_comedian, model)
+        curr_comedian = next_comedian
+        curr_sentence += next_sentence
+        sentences.append(next_sentence)
+        
+    return sentences
+
+    
+
 
 @app.route('/')
 def index():
@@ -59,20 +92,23 @@ def sentencefinisher(methods = ["GET"]):
     model = request.args["model"]
     sentence = request.args["sentence"]
     i = state_size_upperbound
-    finished_sentence = None
-    while True:
-        if i == 0:
-            big_gen = get_gen(comedian, model, state_size_upperbound)
-            finished_sentence = big_gen.get_jokes(1)[0]
-            break
-        gen = get_gen(comedian, model, i)
-        finished_sentence = gen.finish_sentence(sentence)
-        if finished_sentence:
-            break
-
-        i -= 1
+    finished_sentence = continue_sentence(sentence, comedian, model)
 
     return render_template("sentencefinisher.html", comedians=comedians, model_id=model, model=model_id_to_name[model], comedian=comedian_id_to_name(comedian), comedian_id=comedian, finished_sentence=finished_sentence)
+
+@app.route("/ensemble_landing")
+def ensamble_landing():
+    return render_template("ensemble_landing.html")
+
+@app.route("/ensemble")
+def ensemble(methods = ["GET"]):
+    model = "markov"
+    num_sentences = int(request.args["num_sentences"])
+    ensamble_sentences = get_ensamble_sentences(model, num_sentences)
+    combined_sentence = " ".join(ensamble_sentences)
+    return render_template("ensemble.html", combined_sentence=combined_sentence)
+
+
 
 #@app.route("/sentencefinisher")
 #def sentencefinisher_landing(methods = ["GET"]):
