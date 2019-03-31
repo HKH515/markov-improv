@@ -23,7 +23,7 @@ class Generator:
         self.state_size = state_size
         for f in os.listdir(os.path.join(file_root, folder)):
             file_path = os.path.join(file_root, folder, f)
-            with open(file_path) as f_stream:
+            with open(file_path, "r", encoding="utf-8", errors="ignore") as f_stream:
                 data = f_stream.read()
                 if model == "nltk":
                     self.models.append(CustomText(data))
